@@ -32,36 +32,48 @@
 </div>
 
 <script>
-    function sendMessage() {
-        const input = document.getElementById('user-input');
-        const chatbox = document.getElementById('chatbox');
-        
-        if (input.value.trim() !== "") {
-            // Add User Message
-            const userDiv = document.createElement('div');
-            userDiv.className = 'message user';
-            userDiv.innerText = input.value;
-            chatbox.appendChild(userDiv);
+   function sendMessage() {
+    const input = document.getElementById('user-input');
+    const chatbox = document.getElementById('chatbox');
+    const userText = input.value.trim().toLowerCase();
+    
+    if (userText !== "") {
+        // 1. Display User Message
+        const userDiv = document.createElement('div');
+        userDiv.className = 'message user';
+        userDiv.innerText = input.value;
+        chatbox.appendChild(userDiv);
 
-            // Simulate Bot Response
-            const botResponse = input.value;
-            input.value = "";
+        // Clear input and scroll
+        input.value = "";
+        chatbox.scrollTop = chatbox.scrollHeight;
+
+        // 2. Generate Dynamic Response
+        setTimeout(() => {
+            const botDiv = document.createElement('div');
+            botDiv.className = 'message bot';
+            
+            // Logic to change response based on user input
+            if (userText.includes("send")) {
+                botDiv.innerText = "I've initiated the Gmail tool. Who should I send this to?";
+            } else if (userText.includes("draft") || userText.includes("write")) {
+                botDiv.innerText = "I'm drafting that now. What is the subject line?";
+            } else if (userText.includes("hello") || userText.includes("hi")) {
+                botDiv.innerText = "Hello! I am AdeTim. I can help you draft or send emails via Gmail. What's on your mind?";
+            } else {
+                botDiv.innerText = `I understand you want to talk about "${userText}". Should I help you draft an email about this or send it directly?`;
+            }
+
+            chatbox.appendChild(botDiv);
             chatbox.scrollTop = chatbox.scrollHeight;
-
-            setTimeout(() => {
-                const botDiv = document.createElement('div');
-                botDiv.className = 'message bot';
-                botDiv.innerText = "I'm processing that for you. Should I draft this email or send it via Gmail?";
-                chatbox.appendChild(botDiv);
-                chatbox.scrollTop = chatbox.scrollHeight;
-            }, 800);
-        }
+        }, 800);
     }
-
+}
     function handleKeyPress(e) {
         if (e.key === 'Enter') sendMessage();
     }
 </script>
 
 </body>
+
 </html>
